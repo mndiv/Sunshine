@@ -2,4 +2,8 @@
     <string name="app_name">Sunshine</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="dayTextView">Today , June 24</string>
+    <string name="tempHi">24&#176;</string>
+    <string name="temp_Lo">8&#176;</string>
+    <string name="tempCondition">Cloudy</string>
 </resources>
