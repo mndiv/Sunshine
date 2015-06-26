@@ -2,4 +2,31 @@
     <string name="app_name">Sunshine</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="hello_world0">Text0</string>
+    <string name="hello_world1">Text1</string>
+    <string name="hello_world2">Text2</string>
+    <string name="hello_world3">Text3</string>
+    <string name="hello_world4">Text4</string>
+    <string name="hello_world5">Text5</string>
+    <string name="hello_world6">Text6</string>
+    <string name="hello_world7">Text7</string>
+    <string name="hello_world8">Text8</string>
+    <string name="hello_world9">Text9</string>
+    <string name="hello_world10">Tex10t</string>
+    <string name="hello_world11">Text11</string>
+    <string name="hello_world12">Text12</string>
+    <string name="hello_world13">Text13</string>
+    <string name="hello_world14">Text14</string>
+    <string name="hello_world15">Text15</string>
+    <string name="hello_world16">Text16</string>
+    <string name="hello_world17">Text17</string>
+    <string name="hello_world18">Text18</string>
+    <string name="hello_world19">Text19</string>
+    <string name="hello_world20">Text20</string>
+    <string name="hello_world21">Text21</string>
+    <string name="hello_world22">Text22</string>
+    <string name="hello_world23">Text23</string>
+    <string name="hello_world24">Text24</string>
+    <string name="imageName">Sample Image</string>
 </resources>
