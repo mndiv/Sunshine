@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,11 +90,15 @@ public class ForecastFragment extends Fragment {
 
         ListView listView =  (ListView) rootView.findViewById(R.id.listView_forecast);
         listView.setAdapter(mForecastAdapter);
+        listView.setAdapter(mForecastAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String forecast = mForecastAdapter.getItem(position);
-                Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+               //Replaced Toast with Intent
+                //Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+                Intent toDetail = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT,forecast);
+                startActivity(toDetail);
             }
         });
         return rootView;
@@ -253,7 +257,7 @@ public class ForecastFragment extends Fragment {
 
                 String myUri = builtUri.toString();
 
-                Log.v("FetchWeatherTask",myUri);
+               // Log.v("FetchWeatherTask",myUri);
                 URL url = new URL(myUri);
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection)url.openConnection();
