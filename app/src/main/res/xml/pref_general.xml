@@ -12,5 +12,11 @@
 
     </EditTextPreference>
 
+    <ListPreference android:key= "@string/pref_metrics_key"
+                    android:title="@string/pref_metrics_label"
+                    android:entries="@array/listEntries"
+                    android:entryValues="@array/listValues"
+                    android:defaultValue="@string/pref_metric_default"
+                    />
 
 </PreferenceScreen>

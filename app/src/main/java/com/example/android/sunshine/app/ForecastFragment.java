@@ -39,6 +39,7 @@ import java.util.ArrayList;
 public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
+    private SharedPreferences sharedPrefs;
 
     public ForecastFragment() {
     }
@@ -80,7 +81,7 @@ public class ForecastFragment extends Fragment {
 
     private void updateWeather() {
         FetchWeatherTask weatherTask = new FetchWeatherTask();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = sharedPrefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
         weatherTask.execute(location);
     }
@@ -90,19 +91,6 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-       /* String[] forecastArray = new String[]{"Today - Sunny - 86/83",
-                "Tomorrow - Foggy - 70/46",
-                "Weds - Cloudy - 72/63",
-                "Thurs - Rainy - 64/51",
-                "Fri - Foggy - 70/46",
-                "Sat - Sunny - 76/68",
-                "Sun - Sunny - 20/7"};
-
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
-
-        mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast,
-                                                                        R.id.list_item_forecast_textView,weekForecast );*/
-
         mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast,
                 R.id.list_item_forecast_textView, new ArrayList<String>());
 
@@ -210,12 +198,18 @@ public class ForecastFragment extends Fragment {
                 JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                 description = weatherObject.getString(OWM_DESCRIPTION);
 
+                String metricUnits = sharedPrefs.getString(getString(R.string.pref_metrics_key), getString(R.string.pref_metric_default));
+
                 // Temperatures are in a child object called "temp".  Try not to name variables
                 // "temp" when working with temperature.  It confuses everybody.
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
+                if(metricUnits.equals(getString(R.string.pref_units_imperial))) {
+                    high = (1.8*high )+ 32;
+                    low = (1.8*low)+32;
+                }
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
@@ -253,30 +247,8 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter(UNITS_PARAM, units)
                         .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays)).build();
 
-                /* //mndivya
-                Uri.Builder builder = new Uri.Builder();
-
-
-                builder.scheme("http")
-                        .authority("api.openweathermap.org")
-                        .appendPath("data")
-                        .appendPath("2.5")
-                        .appendPath("forecast")
-                        .appendPath("daily")
-                        .appendQueryParameter("q", postalCode[0])
-                        .appendQueryParameter("mode", "json")
-                        .appendQueryParameter("units", "metric")
-                        .appendQueryParameter("cnt","7");
-
-
-                //Constructs the URL for the openWeatherMap query
-                // possible parameters are available at OWM's forecast API page at
-                //http://openweathermap.org/API#forecast
-                String myUrl = builder.build().toString();*/
-
                 String myUri = builtUri.toString();
 
-                // Log.v("FetchWeatherTask",myUri);
                 URL url = new URL(myUri);
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
