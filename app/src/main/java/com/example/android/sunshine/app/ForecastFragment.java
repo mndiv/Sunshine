@@ -233,6 +233,7 @@ public class ForecastFragment extends Fragment {
             String forecastJSONString = null;
 
             try {
+                //http://api.openweathermap.org/data/2.5/forecast/daily?q=33626&mode=json&units=metric&cnt=7
                 final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
                 final String QUERY_PARAM = "q";
                 final String FORMAT_PARAM = "mode";

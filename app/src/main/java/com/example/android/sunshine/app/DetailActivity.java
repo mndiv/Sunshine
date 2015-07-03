@@ -19,13 +19,19 @@ package com.example.android.sunshine.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+//import android.widget.ShareActionProvider;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -33,7 +39,6 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -62,11 +67,10 @@ public class DetailActivity extends AppCompatActivity {
             return true;
         }*/
 
-        if(id == R.id.action_settings)
-        {
-            Intent intent = new Intent(this,SettingsActivity.class);
-            startActivity(intent );
-            return  true;
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -77,7 +81,13 @@ public class DetailActivity extends AppCompatActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        public ShareActionProvider mShareActionProvider;
+        private String mForecastStr;
+        private static final String HASH_TAG_APPNAME = "#SunshineApp";
+        private static final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
+
         public PlaceholderFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -87,11 +97,37 @@ public class DetailActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             Intent intent = getActivity().getIntent();
-            String forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-            if((intent != null) && intent.hasExtra(intent.EXTRA_TEXT))
-                ((TextView) rootView.findViewById(R.id.dayForecast)).setText(forecast);
-           return rootView;
+            if ((intent != null) && intent.hasExtra(intent.EXTRA_TEXT))
+                ((TextView) rootView.findViewById(R.id.dayForecast)).setText(mForecastStr);
+
+
+            return rootView;
+        }
+
+        private Intent createShareForecastIntent(){
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, mForecastStr +HASH_TAG_APPNAME);
+            sendIntent.setType("text/plain");
+            return sendIntent;
+        }
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.detailfragment, menu);
+            MenuItem item = menu.findItem(R.id.menu_item_share);
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            }
+            else {
+                Log.d(LOG_TAG,"Share Action Provider is null");
+            }
+
+            super.onCreateOptionsMenu(menu, inflater);
+
         }
     }
 }
