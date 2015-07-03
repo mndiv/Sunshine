@@ -91,7 +91,6 @@ public class DetailActivity extends AppCompatActivity {
 
             if((intent != null) && intent.hasExtra(intent.EXTRA_TEXT))
                 ((TextView) rootView.findViewById(R.id.dayForecast)).setText(forecast);
-
            return rootView;
         }
     }
